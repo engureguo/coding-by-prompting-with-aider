@@ -43,12 +43,11 @@ function handleInsert(req, res) {
   })
 
   req.on('end', () => {
-    const jsonData = JSON.parse(data)
-    const name = jsonData.named
+    const name = req.url.split('?')[1].split('=')[1]
     const id = Math.floor(Math.random() * 1000) // Generate a random integer between 0 and 999
 
     connection.query(
-      `INSERT INTO student(\`id\`,\`name\`) VALUES(${id}, ${name})`,
+      `INSERT INTO student(\`id\`,\`name\`) VALUES(${id}, '${name}')`,
       (err, result) => {
         if (err) {
           console.error('Error executing insert query:', err)
