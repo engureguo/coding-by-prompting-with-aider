@@ -47,18 +47,19 @@ function handleInsert(req, res) {
     const name = jsonData.named
     const id = Math.floor(Math.random() * 1000) // Generate a random integer between 0 and 999
 
-    const student = { id, name }
-
-    connection.query('INSERT INTO student SET ?', student, (err, result) => {
-      if (err) {
-        console.error('Error executing insert query:', err)
-        res.statusCode = 500
-        res.end('Internal Server Error')
-        return
+    connection.query(
+      `INSERT INTO student(\`id\`,\`name\`) VALUES(${id}, ${name})`,
+      (err, result) => {
+        if (err) {
+          console.error('Error executing insert query:', err)
+          res.statusCode = 500
+          res.end('Internal Server Error')
+          return
+        }
+        res.statusCode = 200
+        res.end('Insert successful')
       }
-      res.statusCode = 200
-      res.end('Insert successful')
-    })
+    )
   })
 }
 
