@@ -16,6 +16,8 @@ connection.connect((err) => {
   console.log('Connected to MySQL')
 })
 
+const candidateNames = ['Alice', 'Bob', 'Charlie', 'David', 'Eve', 'Frank', 'Grace', 'Henry', 'Ivy', 'Jack', 'Kate', 'Liam', 'Mia', 'Noah', 'Olivia', 'Peter', 'Quinn', 'Ryan', 'Sophia', 'Tom']
+
 const server = http.createServer((req, res) => {
   let reqUrl = req.url
   console.log('===> ', reqUrl)
@@ -74,7 +76,7 @@ function handleIndex(req, res) {
 }
 
 function handleInsert(req, res) {
-  let name = 'Chase'
+  const name = candidateNames[Math.floor(Math.random() * candidateNames.length)]
   const id = Math.floor(Math.random() * 1000) // Generate a random integer between 0 and 999
 
   connection.query(
