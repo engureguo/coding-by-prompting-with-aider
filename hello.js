@@ -109,20 +109,6 @@ function handleInsert(req, res) {
   )
 }
 
-// function handleSelect(req, res) {
-//   connection.query(`SELECT * FROM student`, (err, results) => {
-//     if (err) {
-//       console.error('Error executing select query:', err)
-//       res.statusCode = 500
-//       res.end('Internal Server Error')
-//       return
-//     }
-//     res.statusCode = 200
-//     res.setHeader('Content-Type', 'application/json')
-//     res.end(JSON.stringify(results))
-//   })
-// }
-
 function handleSelect(req, res) {
   connection.query(`SELECT * FROM student`, (err, results) => {
     if (err) {
@@ -146,7 +132,7 @@ function handleSelect(req, res) {
     res.write('  padding: 8px;')
     res.write('}')
     res.write('button {')
-    res.write('  margin-bottom: 30px;') // Added margin-bottom to the button
+    res.write('  margin-top: 30px;') // Added margin-bottom to the button
     res.write('}')
     res.write('</style>')
     res.write('</head>')
