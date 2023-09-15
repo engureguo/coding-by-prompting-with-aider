@@ -33,6 +33,8 @@ const server = http.createServer((req, res) => {
     handleInsert(req, res)
   } else if (prefix === '/select') {
     handleSelect(req, res)
+  } else if (prefix === '/clear') {
+    handleClear(req, res)
   } else {
     res.statusCode = 404
     res.end('Not Found')
@@ -54,12 +56,16 @@ function handleIndex(req, res) {
   res.write('<h1>CRUD Operations</h1>')
   res.write('<button onclick="handleSelect()">Select</button>')
   res.write('<button onclick="handleInsert()">Insert</button>')
+  res.write('<button onclick="handleClear()">Clear</button>') // Added clear button
   res.write('<script>')
   res.write('function handleSelect() {')
   res.write('  window.location.href = "/select";')
   res.write('}')
   res.write('function handleInsert() {')
   res.write('  window.location.href = "/insert";')
+  res.write('}')
+  res.write('function handleClear() {') // Added handleClear function
+  res.write('  window.location.href = "/clear";')
   res.write('}')
   res.write('</script>')
   res.write('</body>')
@@ -114,5 +120,35 @@ function handleSelect(req, res) {
     res.statusCode = 200
     res.setHeader('Content-Type', 'application/json')
     res.end(JSON.stringify(results))
+  })
+}
+
+function handleClear(req, res) {
+  connection.query(`DELETE FROM student`, (err, result) => {
+    if (err) {
+      console.error('Error executing delete query:', err)
+      res.statusCode = 500
+      res.end('Internal Server Error')
+      return
+    }
+    res.statusCode = 200
+    res.setHeader('Content-Type', 'text/html')
+    res.write('<html>')
+    res.write('<head>')
+    res.write('<title>Delete Successful</title>')
+    res.write('</head>')
+    res.write('<body>')
+    res.write('<h1>Delete Successful</h1>')
+    res.write(
+      '<button onclick="returnToHomepage()">Return to Homepage</button>'
+    )
+    res.write('<script>')
+    res.write('function returnToHomepage() {')
+    res.write('  window.location.href = "/";')
+    res.write('}')
+    res.write('</script>')
+    res.write('</body>')
+    res.write('</html>')
+    res.end()
   })
 }
