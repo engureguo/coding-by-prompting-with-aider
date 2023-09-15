@@ -145,6 +145,9 @@ function handleSelect(req, res) {
     res.write('  border: 1px solid black;')
     res.write('  padding: 8px;')
     res.write('}')
+    res.write('button {')
+    res.write('  margin-bottom: 30px;') // Added margin-bottom to the button
+    res.write('}')
     res.write('</style>')
     res.write('</head>')
     res.write('<body>')
