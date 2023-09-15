@@ -29,10 +29,6 @@ const server = http.createServer((req, res) => {
 
   if (prefix === '/insert') {
     handleInsert(req, res)
-  } else if (prefix === '/delete') {
-    handleDelete(req, res)
-  } else if (prefix === '/update') {
-    handleUpdate(req, res)
   } else if (prefix === '/select') {
     handleSelect(req, res)
   } else {
