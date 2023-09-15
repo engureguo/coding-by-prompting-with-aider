@@ -17,13 +17,23 @@ connection.connect((err) => {
 })
 
 const server = http.createServer((req, res) => {
-  if (req.url === '/insert') {
+  let reqUrl = req.url
+  console.log('===> ', reqUrl)
+  let prefix = reqUrl
+  let params = ''
+  if (reqUrl.indexOf('?') !== -1) {
+    let urlArr = reqUrl.split('?')
+    prefix = urlArr[0]
+    params = urlArr[1]
+  }
+
+  if (prefix === '/insert') {
     handleInsert(req, res)
-  } else if (req.url === '/delete') {
+  } else if (prefix === '/delete') {
     handleDelete(req, res)
-  } else if (req.url === '/update') {
+  } else if (prefix === '/update') {
     handleUpdate(req, res)
-  } else if (req.url === '/select') {
+  } else if (prefix === '/select') {
     handleSelect(req, res)
   } else {
     res.statusCode = 404
@@ -36,73 +46,22 @@ server.listen(8000, 'localhost', () => {
 })
 
 function handleInsert(req, res) {
-  let data = ''
+  let name = 'Chase'
+  const id = Math.floor(Math.random() * 1000) // Generate a random integer between 0 and 999
 
-  req.on('data', (chunk) => {
-    data += chunk
-  })
-
-  req.on('end', () => {
-    const name = req.url.split('?')[1].split('=')[1]
-    const id = Math.floor(Math.random() * 1000) // Generate a random integer between 0 and 999
-
-    connection.query(
-      `INSERT INTO student(\`id\`,\`name\`) VALUES(${id}, '${name}')`,
-      (err, result) => {
-        if (err) {
-          console.error('Error executing insert query:', err)
-          res.statusCode = 500
-          res.end('Internal Server Error')
-          return
-        }
-        res.statusCode = 200
-        res.end('Insert successful')
+  connection.query(
+    `INSERT INTO student(\`id\`,\`name\`) VALUES(${id}, "${name}");`,
+    (err, result) => {
+      if (err) {
+        console.error('Error executing insert query:', err)
+        res.statusCode = 500
+        res.end('Internal Server Error')
+        return
       }
-    )
-  })
-}
-
-function handleDelete(req, res) {
-  const condition = req.url.split('?')[1]
-
-  connection.query(`DELETE FROM student WHERE ${condition}`, (err, result) => {
-    if (err) {
-      console.error('Error executing delete query:', err)
-      res.statusCode = 500
-      res.end('Internal Server Error')
-      return
+      res.statusCode = 200
+      res.end('Insert successful')
     }
-    res.statusCode = 200
-    res.end('Delete successful')
-  })
-}
-
-function handleUpdate(req, res) {
-  let data = ''
-
-  req.on('data', (chunk) => {
-    data += chunk
-  })
-
-  req.on('end', () => {
-    const jsonData = JSON.parse(data)
-    const condition = req.url.split('?')[1]
-
-    connection.query(
-      'UPDATE student SET ? WHERE ' + condition,
-      jsonData,
-      (err, result) => {
-        if (err) {
-          console.error('Error executing update query:', err)
-          res.statusCode = 500
-          res.end('Internal Server Error')
-          return
-        }
-        res.statusCode = 200
-        res.end('Update successful')
-      }
-    )
-  })
+  )
 }
 
 function handleSelect(req, res) {
