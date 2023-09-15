@@ -36,12 +36,20 @@ server.listen(8000, 'localhost', () => {
 })
 
 function handleInsert(req, res) {
-  req.on('end', () => {
-    // Parse the data as JSON
-    const jsonData = JSON.parse(data)
+  let data = ''
 
-    // Perform the insert operation
-    connection.query('INSERT INTO student SET ?', jsonData, (err, result) => {
+  req.on('data', (chunk) => {
+    data += chunk
+  })
+
+  req.on('end', () => {
+    const jsonData = JSON.parse(data)
+    const name = jsonData.named
+    const id = Math.floor(Math.random() * 1000) // Generate a random integer between 0 and 999
+
+    const student = { id, name }
+
+    connection.query('INSERT INTO student SET ?', student, (err, result) => {
       if (err) {
         console.error('Error executing insert query:', err)
         res.statusCode = 500
@@ -55,10 +63,8 @@ function handleInsert(req, res) {
 }
 
 function handleDelete(req, res) {
-  // Extract the condition for deletion from the request query parameters
   const condition = req.url.split('?')[1]
 
-  // Perform the delete operation
   connection.query(`DELETE FROM student WHERE ${condition}`, (err, result) => {
     if (err) {
       console.error('Error executing delete query:', err)
@@ -72,7 +78,6 @@ function handleDelete(req, res) {
 }
 
 function handleUpdate(req, res) {
-  // Extract the updated data and condition from the request body
   let data = ''
 
   req.on('data', (chunk) => {
@@ -80,13 +85,9 @@ function handleUpdate(req, res) {
   })
 
   req.on('end', () => {
-    // Parse the data as JSON
     const jsonData = JSON.parse(data)
-
-    // Extract the condition for updating from the request query parameters
     const condition = req.url.split('?')[1]
 
-    // Perform the update operation
     connection.query(
       'UPDATE student SET ? WHERE ' + condition,
       jsonData,
@@ -105,7 +106,6 @@ function handleUpdate(req, res) {
 }
 
 function handleSelect(req, res) {
-  // Perform the select operation
   connection.query(`SELECT * FROM student`, (err, results) => {
     if (err) {
       console.error('Error executing select query:', err)
