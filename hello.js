@@ -48,7 +48,7 @@ function handleInsert(req, res) {
     const jsonData = JSON.parse(data);
 
     // Perform the insert operation
-    connection.query('INSERT INTO your_table SET ?', jsonData, (err, result) => {
+    connection.query('INSERT INTO student SET ?', jsonData, (err, result) => {
       if (err) {
         console.error('Error executing insert query:', err);
         res.statusCode = 500;
@@ -66,7 +66,7 @@ function handleDelete(req, res) {
   const condition = req.url.split('?')[1];
 
   // Perform the delete operation
-  connection.query(`DELETE FROM your_table WHERE ${condition}`, (err, result) => {
+  connection.query(`DELETE FROM student WHERE ${condition}`, (err, result) => {
     if (err) {
       console.error('Error executing delete query:', err);
       res.statusCode = 500;
@@ -94,7 +94,7 @@ function handleUpdate(req, res) {
     const condition = req.url.split('?')[1];
 
     // Perform the update operation
-    connection.query('UPDATE your_table SET ? WHERE ' + condition, jsonData, (err, result) => {
+    connection.query('UPDATE student SET ? WHERE ' + condition, jsonData, (err, result) => {
       if (err) {
         console.error('Error executing update query:', err);
         res.statusCode = 500;
@@ -112,7 +112,7 @@ function handleSelect(req, res) {
   const condition = req.url.split('?')[1];
 
   // Perform the select operation
-  connection.query(`SELECT * FROM your_table WHERE ${condition}`, (err, results) => {
+  connection.query(`SELECT * FROM student WHERE ${condition}`, (err, results) => {
     if (err) {
       console.error('Error executing select query:', err);
       res.statusCode = 500;
