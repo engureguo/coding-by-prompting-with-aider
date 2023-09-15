@@ -1,5 +1,5 @@
 const http = require('http')
-const mysql = require('mysql')
+const mysql = require('mysql'
 
 const connection = mysql.createConnection({
   host: '127.0.0.1',
@@ -88,7 +88,9 @@ function handleIndex(req, res) {
   res.write('  window.location.href = "/insert";')
   res.write('}')
   res.write('function handleClear() {') // Added handleClear function
-  res.write('  window.location.href = "/clear";')
+  res.write('  if (confirm("Are you sure you want to clear the data?")) {')
+  res.write('    window.location.href = "/clear";')
+  res.write('  }')
   res.write('}')
   res.write('</script>')
   res.write('</body>')
