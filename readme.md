@@ -16,7 +16,7 @@ Then, you want to prepare a `openai api key` and expose it into your system envi
 export OPENAI_API_KEY="sk-****"
 ```
 
-Finally, you can use aider command to composing your work:
+Finally, you can use aider command to compose:
 
 ```sh
 $ aider hello.js
@@ -28,7 +28,7 @@ Just write code by prompting!
 
 **_features_**
 
-- Providing 3 api: `/select`, `/clear` and `/insert`, and there are 3 corresponding buttons in index page.
+- Providing 3 api, `/select`, `/clear` and `/insert`, and there are 3 corresponding buttons in index page.
 - Rendering a table to show all records after clicking `select` button.
 - Need to reconfirm after clicking `clear` button.
 - Providing 'return to homepage' button in 3 sub pages.
